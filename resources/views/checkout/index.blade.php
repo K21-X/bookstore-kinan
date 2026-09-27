@@ -1,129 +1,213 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-6xl mx-auto px-4 py-8">
-    <div class="mb-6">
-        <h1 class="text-2xl md:text-3xl font-bold">Checkout & Pengiriman</h1>
-        <p class="text-sm text-base-content/70">Lengkapi informasi pengiriman untuk menyelesaikan pesanan Anda</p>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    
+    <!-- Steps Indicator -->
+    <div class="mb-8 flex items-center justify-center">
+        <div class="flex items-center gap-2 sm:gap-4 text-xs font-semibold">
+            <div class="flex items-center gap-2 text-stone-400">
+                <span class="w-6 h-6 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center text-xs">✓</span>
+                <span class="hidden sm:inline">Keranjang</span>
+            </div>
+            <div class="w-8 sm:w-16 h-0.5 bg-emerald-800"></div>
+            <div class="flex items-center gap-2 text-emerald-800 font-bold">
+                <span class="w-6 h-6 rounded-full bg-emerald-800 text-white flex items-center justify-center text-xs">2</span>
+                <span>Checkout COD</span>
+            </div>
+            <div class="w-8 sm:w-16 h-0.5 bg-stone-200"></div>
+            <div class="flex items-center gap-2 text-stone-400">
+                <span class="w-6 h-6 rounded-full bg-stone-200 text-stone-600 flex items-center justify-center text-xs">3</span>
+                <span class="hidden sm:inline">Pesanan Selesai</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Area -->
+    <div class="mb-8">
+        <h1 class="font-book-title text-2xl sm:text-3xl font-bold text-stone-900">Checkout Pengiriman Buku</h1>
+        <p class="text-xs text-stone-500 mt-0.5">Lengkapi alamat pengiriman untuk proses pengiriman paket buku Anda</p>
     </div>
 
     <form action="{{ route('checkout.store') }}" method="POST">
         @csrf
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 space-y-6">
-                <div class="card bg-base-100 shadow-sm border border-base-300 p-6">
-                    <h2 class="font-bold text-lg mb-4 flex items-center gap-2">
-                        <span class="badge badge-primary">1</span> Informasi Pembeli
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Area: Form Data Pengiriman -->
+            <div class="lg:col-span-8 space-y-6">
+                
+                <!-- Section 1: Data Penerima -->
+                <div class="bg-white rounded-2xl border border-stone-200 p-6 shadow-2xs space-y-4">
+                    <h2 class="font-bold text-xs sm:text-sm text-stone-900 flex items-center gap-2 pb-3 border-b border-stone-100">
+                        <span class="w-5 h-5 rounded-full bg-emerald-800 text-white text-[11px] font-bold flex items-center justify-center">1</span>
+                        <span>Informasi Penerima Paket</span>
                     </h2>
 
                     @auth
-                        <div class="bg-base-200 p-4 rounded-lg space-y-1 text-sm">
-                            <p><strong>Nama:</strong> {{ auth()->user()->name }}</p>
-                            <p><strong>Email:</strong> {{ auth()->user()->email }}</p>
+                        <div class="p-4 rounded-xl bg-stone-50 border border-stone-200 text-xs space-y-1.5 text-stone-600">
+                            <div><strong>Nama Penerima:</strong> {{ auth()->user()->name }}</div>
+                            <div><strong>Alamat Email:</strong> {{ auth()->user()->email }}</div>
                             @if(auth()->user()->phone)
-                                <p><strong>No. HP:</strong> {{ auth()->user()->phone }}</p>
+                                <div><strong>No. Handphone / WhatsApp:</strong> {{ auth()->user()->phone }}</div>
                             @endif
                         </div>
                     @else
-                        <div class="alert alert-info py-2 text-xs mb-4">
-                            <span>Anda berbelanja sebagai tamu (Guest). Ingin riwayat pesanan tercatat di akun? <a href="{{ route('login') }}" class="link font-bold">Masuk di sini</a></span>
+                        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900 flex items-center justify-between">
+                            <span>Berbelanja sebagai tamu (guest)? Anda bisa langsung pesan tanpa daftar.</span>
+                            <a href="{{ route('login') }}" class="font-bold text-emerald-800 hover:underline">Masuk Akun</a>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <fieldset class="fieldset">
-                                <legend class="fieldset-legend">Nama Lengkap</legend>
-                                <input type="text" name="guest_name" value="{{ old('guest_name') }}" class="input input-bordered w-full @error('guest_name') input-error @enderror" placeholder="Nama penerima" required />
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                            <div>
+                                <label for="guest_name" class="block text-[11px] font-bold uppercase tracking-wider text-stone-600 mb-1.5">Nama Lengkap</label>
+                                <input 
+                                    type="text" 
+                                    id="guest_name" 
+                                    name="guest_name" 
+                                    value="{{ old('guest_name') }}" 
+                                    class="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-medium outline-none focus:bg-white focus:border-emerald-700 @error('guest_name') border-rose-500 @enderror" 
+                                    placeholder="Contoh: Budi Santoso" 
+                                    required 
+                                />
                                 @error('guest_name')
-                                    <p class="fieldset-label text-error">{{ $message }}</p>
+                                    <p class="text-[11px] text-rose-600 mt-1">{{ $message }}</p>
                                 @enderror
-                            </fieldset>
+                            </div>
 
-                            <fieldset class="fieldset">
-                                <legend class="fieldset-legend">Email</legend>
-                                <input type="email" name="guest_email" value="{{ old('guest_email') }}" class="input input-bordered w-full @error('guest_email') input-error @enderror" placeholder="email@domain.com" required />
+                            <div>
+                                <label for="guest_email" class="block text-[11px] font-bold uppercase tracking-wider text-stone-600 mb-1.5">Alamat Email</label>
+                                <input 
+                                    type="email" 
+                                    id="guest_email" 
+                                    name="guest_email" 
+                                    value="{{ old('guest_email') }}" 
+                                    class="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-medium outline-none focus:bg-white focus:border-emerald-700 @error('guest_email') border-rose-500 @enderror" 
+                                    placeholder="nama@email.com" 
+                                    required 
+                                />
                                 @error('guest_email')
-                                    <p class="fieldset-label text-error">{{ $message }}</p>
+                                    <p class="text-[11px] text-rose-600 mt-1">{{ $message }}</p>
                                 @enderror
-                            </fieldset>
+                            </div>
 
-                            <fieldset class="fieldset sm:col-span-2">
-                                <legend class="fieldset-legend">No. Handphone / WhatsApp</legend>
-                                <input type="text" name="guest_phone" value="{{ old('guest_phone') }}" class="input input-bordered w-full @error('guest_phone') input-error @enderror" placeholder="08xxxxxxxxxx" required />
+                            <div class="sm:col-span-2">
+                                <label for="guest_phone" class="block text-[11px] font-bold uppercase tracking-wider text-stone-600 mb-1.5">No. Handphone / WhatsApp</label>
+                                <input 
+                                    type="text" 
+                                    id="guest_phone" 
+                                    name="guest_phone" 
+                                    value="{{ old('guest_phone') }}" 
+                                    class="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-medium outline-none focus:bg-white focus:border-emerald-700 @error('guest_phone') border-rose-500 @enderror" 
+                                    placeholder="08xxxxxxxxxx (untuk konfirmasi kurir)" 
+                                    required 
+                                />
                                 @error('guest_phone')
-                                    <p class="fieldset-label text-error">{{ $message }}</p>
+                                    <p class="text-[11px] text-rose-600 mt-1">{{ $message }}</p>
                                 @enderror
-                            </fieldset>
+                            </div>
                         </div>
                     @endauth
                 </div>
 
-                <div class="card bg-base-100 shadow-sm border border-base-300 p-6">
-                    <h2 class="font-bold text-lg mb-4 flex items-center gap-2">
-                        <span class="badge badge-primary">2</span> Alamat Pengiriman
+                <!-- Section 2: Alamat Pengiriman -->
+                <div class="bg-white rounded-2xl border border-stone-200 p-6 shadow-2xs space-y-4">
+                    <h2 class="font-bold text-xs sm:text-sm text-stone-900 flex items-center gap-2 pb-3 border-b border-stone-100">
+                        <span class="w-5 h-5 rounded-full bg-emerald-800 text-white text-[11px] font-bold flex items-center justify-center">2</span>
+                        <span>Alamat Lengkap Pengiriman</span>
                     </h2>
 
-                    <fieldset class="fieldset">
-                        <legend class="fieldset-legend">Alamat Lengkap Tujuan</legend>
-                        <textarea name="shipping_address" rows="3" class="textarea textarea-bordered w-full @error('shipping_address') textarea-error @enderror" placeholder="Jalan, RT/RW, No. Rumah, Kelurahan, Kecamatan, Kota/Kabupaten, Kode Pos" required>{{ old('shipping_address', auth()->user()->address ?? '') }}</textarea>
+                    <div>
+                        <label for="shipping_address" class="block text-[11px] font-bold uppercase tracking-wider text-stone-600 mb-1.5">Alamat Tujuan Pengiriman</label>
+                        <textarea 
+                            id="shipping_address" 
+                            name="shipping_address" 
+                            rows="4" 
+                            class="w-full px-3 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-medium outline-none focus:bg-white focus:border-emerald-700 @error('shipping_address') border-rose-500 @enderror" 
+                            placeholder="Tuliskan nama jalan, nomor rumah, RT/RW, kelurahan, kecamatan, kota/kabupaten, dan kode pos tujuan..." 
+                            required>{{ old('shipping_address', $user->address ?? '') }}</textarea>
                         @error('shipping_address')
-                            <p class="fieldset-label text-error">{{ $message }}</p>
+                            <p class="text-[11px] text-rose-600 mt-1">{{ $message }}</p>
                         @enderror
-                    </fieldset>
+                        <p class="text-[11px] text-stone-400 mt-1">Pastikan alamat selengkap mungkin agar kurir dapat menemukan lokasi dengan cepat.</p>
+                    </div>
                 </div>
 
-                <div class="card bg-base-100 shadow-sm border border-base-300 p-6">
-                    <h2 class="font-bold text-lg mb-4 flex items-center gap-2">
-                        <span class="badge badge-primary">3</span> Metode Pembayaran
+                <!-- Section 3: Metode Pembayaran -->
+                <div class="bg-white rounded-2xl border border-stone-200 p-6 shadow-2xs space-y-4">
+                    <h2 class="font-bold text-xs sm:text-sm text-stone-900 flex items-center gap-2 pb-3 border-b border-stone-100">
+                        <span class="w-5 h-5 rounded-full bg-emerald-800 text-white text-[11px] font-bold flex items-center justify-center">3</span>
+                        <span>Metode Pembayaran</span>
                     </h2>
 
-                    <div class="border border-primary bg-primary/5 p-4 rounded-lg flex items-start gap-3">
-                        <input type="radio" name="payment_method" value="cod" class="radio radio-primary mt-1" checked />
+                    <div class="p-4 rounded-xl border-2 border-emerald-800 bg-emerald-50/50 flex items-start gap-3">
+                        <input type="radio" checked readonly class="radio radio-success radio-xs mt-1" />
                         <div>
-                            <div class="font-bold text-base">Cash on Delivery (COD)</div>
-                            <div class="text-xs text-base-content/70 mt-1">
-                                Bayar tunai kepada kurir saat buku telah sampai di alamat tujuan Anda. Aman, praktis, dan tanpa repot transfer.
+                            <div class="font-bold text-xs text-stone-900 flex items-center gap-2">
+                                <span>Bayar di Tempat (Cash on Delivery / COD)</span>
+                                <span class="badge badge-xs bg-emerald-800 text-white">Default</span>
                             </div>
+                            <p class="text-[11px] text-stone-500 mt-1 leading-relaxed">
+                                Anda membayar secara tunai langsung kepada kurir saat buku telah sampai di alamat pengiriman Anda. Tanpa risiko, aman dan terpercaya!
+                            </p>
                         </div>
                     </div>
                 </div>
+
             </div>
 
-            <div class="lg:col-span-1">
-                <div class="card bg-base-100 shadow-sm border border-base-300 p-6 sticky top-20">
-                    <h2 class="font-bold text-lg mb-4">Pesanan Anda</h2>
+            <!-- Right Area: Order Summary Sticky Card -->
+            <div class="lg:col-span-4">
+                <div class="bg-white rounded-2xl border border-stone-200 p-6 shadow-2xs space-y-4 sticky top-24">
+                    <h3 class="font-bold text-sm text-stone-900 pb-3 border-b border-stone-100">
+                        Rincian Pesanan
+                    </h3>
 
-                    <div class="divide-y divide-base-200 text-sm max-h-60 overflow-y-auto mb-4">
+                    <!-- Mini items list -->
+                    <div class="space-y-3 max-h-60 overflow-y-auto pr-1">
                         @foreach($cart as $item)
-                            <div class="py-2 flex justify-between gap-2">
-                                <div>
-                                    <div class="font-semibold line-clamp-1">{{ $item['title'] }}</div>
-                                    <div class="text-xs text-base-content/60">{{ $item['qty'] }} x Rp {{ number_format($item['price'], 0, ',', '.') }}</div>
+                            <div class="flex items-center justify-between text-xs gap-3">
+                                <div class="overflow-hidden">
+                                    <div class="font-semibold text-stone-800 truncate">{{ $item['title'] }}</div>
+                                    <div class="text-[11px] text-stone-400">{{ $item['qty'] }}x @ Rp {{ number_format($item['price'], 0, ',', '.') }}</div>
                                 </div>
-                                <div class="font-bold whitespace-nowrap text-right">
+                                <span class="font-bold text-stone-900 whitespace-nowrap">
                                     Rp {{ number_format($item['price'] * $item['qty'], 0, ',', '.') }}
-                                </div>
+                                </span>
                             </div>
                         @endforeach
                     </div>
 
-                    <div class="border-t border-base-300 pt-4 space-y-2 text-sm">
-                        <div class="flex justify-between font-extrabold text-base">
-                            <span>Total Tagihan:</span>
-                            <span class="text-primary text-xl">Rp {{ number_format($total, 0, ',', '.') }}</span>
+                    <div class="pt-3 border-t border-stone-100 space-y-2 text-xs text-stone-600">
+                        <div class="flex justify-between">
+                            <span>Subtotal Buku:</span>
+                            <span class="font-bold text-stone-900">Rp {{ number_format($total, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Biaya Layanan COD:</span>
+                            <span class="text-emerald-800 font-bold">Gratis</span>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-full mt-6 text-base">
-                        Konfirmasi & Buat Pesanan
+                    <div class="pt-3 border-t border-stone-100 flex justify-between items-baseline">
+                        <span class="text-xs font-bold text-stone-900">Total Tagihan COD:</span>
+                        <span class="text-xl font-extrabold text-emerald-800">
+                            Rp {{ number_format($total, 0, ',', '.') }}
+                        </span>
+                    </div>
+
+                    <button type="submit" class="w-full py-3 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs shadow-2xs transition-colors">
+                        Buat Pesanan COD Sekarang &rarr;
                     </button>
-                    
-                    <a href="{{ route('cart.index') }}" class="btn btn-ghost btn-sm w-full mt-2">
-                        Kembali ke Keranjang
-                    </a>
+
+                    <p class="text-[11px] text-stone-400 text-center leading-normal">
+                        Dengan menekan tombol di atas, pesanan Anda akan segera diproses untuk pengiriman.
+                    </p>
                 </div>
             </div>
+
         </div>
     </form>
+
 </div>
 @endsection

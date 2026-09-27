@@ -13,12 +13,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Admin Wahyu',
-            'email' => 'admin@wahyustore.com',
+            'name' => 'Admin Kinan',
+            'email' => 'admin@aksarastore.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
-            'phone' => '081234567890',
-            'address' => 'Kantor Pusat WahyuStore, Jakarta'
+            'phone' => '081381949010',
+            'address' => 'Kantor Pusat AksaraStore, Jakarta'
         ]);
 
         User::create([
@@ -37,8 +37,8 @@ class DatabaseSeeder extends Seeder
 
         Book::create([
             'category_id' => $cat1->id,
-            'title' => 'Mastering Laravel & Modern PHP',
-            'author' => 'Wahyu Hidayat',
+            'title' => 'Mastering HTML & CSS',
+            'author' => 'Novi Septiana',
             'description' => 'Panduan komprehensif membangun aplikasi web modern, terstruktur, dan scalable dengan ekosistem Laravel terkini.',
             'price' => 125000,
             'stock' => 20,
@@ -47,8 +47,8 @@ class DatabaseSeeder extends Seeder
 
         Book::create([
             'category_id' => $cat2->id,
-            'title' => 'Lentera Malam di Ujung Senja',
-            'author' => 'Ahmad R.',
+            'title' => 'Satu Persen Kemungkinan',
+            'author' => 'Zainudin Bachtera',
             'description' => 'Kisah inspiratif tentang perjuangan, mimpi, dan persahabatan di tengah hiruk-pikuk kota metropolitan.',
             'price' => 85000,
             'stock' => 15,
@@ -57,8 +57,8 @@ class DatabaseSeeder extends Seeder
 
         Book::create([
             'category_id' => $cat3->id,
-            'title' => 'Psikologi Uang & Investasi Cerdas',
-            'author' => 'Morgan H.',
+            'title' => 'Langkah Kecil, Bisnis Besar',
+            'author' => 'Arthur Morgan',
             'description' => 'Memahami pola pikir dan perilaku manusia terhadap uang serta cara mengelola aset dengan bijak.',
             'price' => 98000,
             'stock' => 25,
@@ -67,8 +67,8 @@ class DatabaseSeeder extends Seeder
 
         Book::create([
             'category_id' => $cat4->id,
-            'title' => 'Atomic Habits: Perubahan Kecil Berdampak Besar',
-            'author' => 'James Clear',
+            'title' => 'The Art of Becoming',
+            'author' => 'Micah Bell',
             'description' => 'Cara mudah dan terbukti untuk membentuk kebiasaan baik dan menghilangkan kebiasaan buruk setiap hari.',
             'price' => 110000,
             'stock' => 30,
